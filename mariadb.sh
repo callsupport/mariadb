@@ -13,8 +13,10 @@ fi
 sudo mariadb -u root -p -e "CREATE DATABASE $project_name;"
 
 # Créer un utilisateur avec le nom du projet et un mot de passe aléatoire
+
+sudo mariadb -u root -p -e "CREATE USER '$project_name'@'localhost' IDENTIFIED BY'$password';"
 password=$(openssl rand -base64 12)
-sudo mariadb -u root -p -e "CREATE USER '$project_name'@'localhost' IDENTIFIED BY '$password';"
+
 
 # Accorder tous les droits à l'utilisateur sur la base de données
 sudo mariadb -u root -p -e "GRANT ALL PRIVILEGES ON $project_name.* TO '$project_name'@'localhost';"
