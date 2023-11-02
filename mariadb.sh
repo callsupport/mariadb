@@ -14,7 +14,7 @@ sudo mariadb -u root -p -e "CREATE DATABASE $project_name;"
 sudo mariadb -u root -p -e "CREATE USER '$project_name'@'localhost';"
 
 # Créer un mot de passe aléatoire
-password=$(openssl rand -base64 12)
+password=$(openssl rand -base64 16)
 
 # Définir le mot de passe pour l'utilisateur
 sudo mariadb -u root -p -e "SET PASSWORD FOR '$project_name'@'localhost' = PASSWORD('$password');"
