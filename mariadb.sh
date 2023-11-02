@@ -9,14 +9,14 @@ if ! [ -x "$(command -v mariadb)" ]; then
     sudo apt install mariadb-server -y
 fi
 
+# Créer un mot de passe aléatoire
+password=$(openssl rand -base64 12)
+
 # Créer la base de données avec le nom du projet
 sudo mariadb -u root -p -e "CREATE DATABASE $project_name;"
 
-# Créer un utilisateur avec le nom du projet et un mot de passe aléatoire
-
-sudo mariadb -u root -p -e "CREATE USER '$project_name'@'localhost' IDENTIFIED BY'$password';"
-password=$(openssl rand -base64 12)
-
+# Créer un utilisateur avec le nom du projet et le mot de passe aléatoire
+sudo mariadb -u root -p -e "CREATE USER '$project_name'@'localhost' IDENTIFIED BY '$password';"
 
 # Accorder tous les droits à l'utilisateur sur la base de données
 sudo mariadb -u root -p -e "GRANT ALL PRIVILEGES ON $project_name.* TO '$project_name'@'localhost';"
