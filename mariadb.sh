@@ -13,8 +13,7 @@ fi
 sudo mariadb -e "CREATE DATABASE $project_name;"
 
 # Créer un utilisateur avec le nom du projet et un mot de passe aléatoire
-password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)
-# password=$(openssl rand -base64 12)
+password=$(openssl rand -base64 12)
 sudo mariadb -e "CREATE USER '$project_name'@'localhost' IDENTIFIED BY '$password';"
 
 # Accorder tous les droits à l'utilisateur sur la base de données
