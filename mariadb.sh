@@ -1,11 +1,7 @@
 #!/bin/bash
 
-# Demander le nom du projet à l'utilisateur s'il n'est pas fourni en argument
-if [ $# -eq 0 ]; then
-    read -p "Veuillez entrer le nom du projet : " project_name
-else
-    project_name="$1"
-fi
+# Demander le nom du projet à l'utilisateur
+read -p "Veuillez entrer le nom du projet : " project_name
 
 # Installer MariaDB si nécessaire
 if ! [ -x "$(command -v mariadb)" ]; then
