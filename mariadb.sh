@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Demander le nom du projet à l'utilisateur
 read -p "Veuillez entrer le nom du projet : " project_name
 
@@ -9,17 +7,20 @@ if ! [ -x "$(command -v mariadb)" ]; then
     sudo apt install mariadb-server -y
 fi
 
+# Créer la base de données avec le nom du projet
+sudo mariadb -u root -p -e "CREATE DATABASE $project_name;"
+
+# Créer un utilisateur avec le nom du projet
+sudo mariadb -u root -p -e "CREATE USER '$project_name'@'localhost';"
+
 # Créer un mot de passe aléatoire
 password=$(openssl rand -base64 12)
 
-# Créer la base de données avec le nom du projet
-echo "CREATE DATABASE $project_name;" | sudo mariadb -u root -p
-
-# Créer un utilisateur avec le nom du projet et le mot de passe aléatoire
-echo "CREATE USER '$project_name'@'localhost' IDENTIFIED BY '$password';" | sudo mariadb -u root -p
+# Définir le mot de passe pour l'utilisateur
+sudo mariadb -u root -p -e "SET PASSWORD FOR '$project_name'@'localhost' = PASSWORD('$password');"
 
 # Accorder tous les droits à l'utilisateur sur la base de données
-echo "GRANT ALL PRIVILEGES ON $project_name.* TO '$project_name'@'localhost';" | sudo mariadb -u root -p
+sudo mariadb -u root -p -e "GRANT ALL PRIVILEGES ON $project_name.* TO '$project_name'@'localhost';"
 
 # Afficher les informations récapitulatives
 echo "Base de données $project_name créée avec succès."
